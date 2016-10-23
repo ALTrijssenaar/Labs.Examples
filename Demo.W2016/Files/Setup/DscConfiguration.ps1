@@ -98,7 +98,7 @@ Configuration CommonServer {
     }
 }
 
-Configuration LabConfiguration {
+Configuration DemoLabEnvironment {
 
     Node $AllNodes.NodeName {
 
