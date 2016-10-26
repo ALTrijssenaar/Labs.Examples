@@ -11,10 +11,14 @@ configuration LCM_RebootNodeIfNeeded {
     }
 }
 
+LCM_RebootNodeIfNeeded -OutputPath "$setupFolder\LCM_RebootNodeIfNeeded" | Out-Null
+Set-DscLocalConfigurationManager -Path "$setupFolder\LCM_RebootNodeIfNeeded" -Verbose -ComputerName localhost
+Write-Log "INFO" "Finished updating LocalConfigurationManager with RebootNodeIfNeeded"
+
 #######################################
 # Apply configuration
 #######################################
-$dscFilePath = "$setupFolder\DscConfiguration.ps1"
+$dscFilePath = Join-Path -Path $setupFolder -ChildPath 'DemoLabEnvironment.ps1'
 if (Test-Path -Path $dscFilePath) {
     Write-Log "INFO" "Start applying configuration"
     Write-Log "INFO" "Preparing configuration for DSC"
@@ -28,6 +32,7 @@ if (Test-Path -Path $dscFilePath) {
             (Convert-PSObjectToHashtable $configuration)
         )
     }
+
     Write-Log "INFO" "Loading configuration"
     . $dscFilePath
     Write-Log "INFO" "Generating configuration"
